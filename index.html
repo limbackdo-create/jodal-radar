@@ -252,9 +252,51 @@
 <div id="contact" class="final wrap">
   <h2>오늘 놓친 공고가, 경쟁사에게는 기회입니다.</h2>
   <p>3일 무료 체험으로 우리 지역·우리 분야 공고를 먼저 받아보세요.</p>
-  <a class="btn btn-primary" style="background:#fff;color:var(--navy2)" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=limbackdo@gmail.com&amp;su=조달%20레이더%20구독·체험%20신청&amp;body=회사명%3A%0A지역(대구/경북/밀양%20등)%3A%0A관심%20키워드%3A%0A연락처%3A%0A%0A(이%20양식을%20채워%20보내주시면%20확인%20후%20안내드립니다)">이메일로 구독·체험 신청</a>
-  <p style="font-size:13px;margin-top:16px;color:#c3d3f5">문의: limbackdo@gmail.com · 100°10 비즈니스 플랫폼</p>
+
+  <div id="sentMsg" style="display:none;max-width:520px;margin:24px auto 0;background:#0d9488;color:#fff;border-radius:14px;padding:18px 20px;font-weight:700">
+    ✅ 신청이 접수되었습니다. 확인 후 <b>limbackdo@gmail.com</b> 으로 안내드리겠습니다. 감사합니다!
+  </div>
+
+  <form id="applyForm" action="https://formsubmit.co/limbackdo@gmail.com" method="POST"
+        style="max-width:520px;margin:24px auto 0;background:#fff;border-radius:16px;padding:26px 24px;text-align:left;box-shadow:0 24px 60px rgba(0,0,0,.28)">
+    <input type="hidden" name="_subject" value="[조달 레이더] 구독·무료체험 신청이 도착했습니다">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_next" value="https://limbackdo-create.github.io/jodal-radar/?sent=1#contact">
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+    <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin:0 0 6px">회사명 / 담당자 <span style="color:#e11d48">*</span></label>
+    <input name="회사명·담당자" required placeholder="예) 100°10 / 홍길동"
+      style="width:100%;padding:12px 14px;border:1px solid #d5deee;border-radius:10px;font-size:15px;margin-bottom:14px;background:#fbfcfe">
+
+    <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin:0 0 6px">관심 지역 <span style="color:#e11d48">*</span></label>
+    <input name="관심지역" required placeholder="예) 대구, 경북, 밀양"
+      style="width:100%;padding:12px 14px;border:1px solid #d5deee;border-radius:10px;font-size:15px;margin-bottom:14px;background:#fbfcfe">
+
+    <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin:0 0 6px">관심 키워드</label>
+    <input name="관심키워드" placeholder="예) CCTV, 방범용카메라, 방송설비, 설계용역"
+      style="width:100%;padding:12px 14px;border:1px solid #d5deee;border-radius:10px;font-size:15px;margin-bottom:14px;background:#fbfcfe">
+
+    <label style="display:block;font-size:13px;font-weight:800;color:#0f172a;margin:0 0 6px">연락처 (전화 또는 이메일) <span style="color:#e11d48">*</span></label>
+    <input name="연락처" required placeholder="예) 010-0000-0000 또는 name@email.com"
+      style="width:100%;padding:12px 14px;border:1px solid #d5deee;border-radius:10px;font-size:15px;margin-bottom:18px;background:#fbfcfe">
+
+    <button type="submit"
+      style="width:100%;background:var(--brand);color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:800;cursor:pointer">
+      3일 무료 체험 · 구독 신청하기
+    </button>
+    <p style="font-size:12px;color:#5b6b86;margin:12px 0 0;text-align:center">신청 즉시 100°10에 접수됩니다 · 언제든 해지 가능</p>
+  </form>
+
+  <p style="font-size:13px;margin-top:18px;color:#c3d3f5">문의: limbackdo@gmail.com · 100°10 비즈니스 플랫폼</p>
 </div>
+<script>
+  if (location.search.indexOf('sent=1') > -1) {
+    var s = document.getElementById('sentMsg'), f = document.getElementById('applyForm');
+    if (s) s.style.display = 'block';
+    if (f) f.style.display = 'none';
+  }
+</script>
 
 <footer><div class="wrap row">
   <div>© 2026 100°10 조달 레이더 · 운영: 100°10 비즈니스 플랫폼</div>
