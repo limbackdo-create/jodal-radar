@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100°10 조달 레이더 — 나라장터 공고 한눈에</title>
+<style>
+  :root{
+    --bg:#f4f6fb; --card:#ffffff; --ink:#0f172a; --muted:#64748b; --line:#e6eaf2;
+    --brand:#1f5fff; --brand2:#0b3ea8;
+    --thng:#2563eb; --cnstwk:#c2620e; --servc:#0d9488; --prestd:#7c3aed; --award:#475569;
+    --danger:#e11d48; --warn:#d97706; --ok:#059669;
+    --chip:#eef2fb;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    -webkit-font-smoothing:antialiased;font-size:14px}
+  /* top bar */
+  .top{background:linear-gradient(100deg,#0b1e50,#123a9e);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:baseline;gap:10px}
+  .brand .logo{font-weight:900;letter-spacing:.5px;font-size:20px}
+  .brand .deg{color:#8fd0ff}
+  .brand .sub{font-size:12.5px;color:#c3d3f5}
+  .top .spacer{flex:1}
+  .livebadge{font-size:12px;font-weight:800;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25)}
+  .livebadge.sample{background:rgba(245,158,11,.18);border-color:rgba(245,158,11,.5);color:#ffe0a3}
+  .livebadge.live{background:rgba(16,185,129,.2);border-color:rgba(16,185,129,.5);color:#a7f3d0}
+  .updated{font-size:12px;color:#c3d3f5}
+  /* kpi */
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 24px 60px}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .kpi .n{font-size:26px;font-weight:900;letter-spacing:-.5px}
+  .kpi .l{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .kpi.acc .n{color:var(--brand)} .kpi.dgr .n{color:var(--danger)} .kpi.pst .n{color:var(--prestd)}
+  /* toolbar */
+  .toolbar{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:16px}
+  .row1{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .search{flex:1;min-width:220px;position:relative}
+  .search input{width:100%;padding:12px 14px 12px 40px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fbfcfe}
+  .search svg{position:absolute;left:13px;top:12px;opacity:.5}
+  .kw{min-width:200px;display:flex;align-items:center;gap:8px;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:0 12px}
+  .kw input{border:0;background:transparent;padding:11px 0;font-size:14px;outline:none;width:100%}
+  .kw .lab{font-size:11px;font-weight:800;color:#c2620e;white-space:nowrap}
+  select.sort{padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fbfcfe;font-size:14px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .tab{border:1px solid var(--line);background:#fff;border-radius:20px;padding:7px 15px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;user-select:none;display:flex;align-items:center;gap:7px}
+  .tab .dot{width:8px;height:8px;border-radius:50%}
+  .tab.on{color:#fff;border-color:transparent}
+  .tab.on.all{background:#0b3ea8}.tab.on.thng{background:var(--thng)}.tab.on.cnstwk{background:var(--cnstwk)}
+  .tab.on.servc{background:var(--servc)}.tab.on.prestd{background:var(--prestd)}
+  .tab .cnt{font-size:11px;opacity:.75;font-weight:800}
+  /* list */
+  .list{display:flex;flex-direction:column;gap:10px}
+  .item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;
+    grid-template-columns:76px 1fr auto;gap:14px;align-items:center;transition:box-shadow .15s,transform .05s}
+  .item:hover{box-shadow:0 8px 24px rgba(15,23,42,.08)}
+  .dday{display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;padding:8px 6px;min-width:76px}
+  .dday .d{font-size:19px;font-weight:900;line-height:1}
+  .dday .t{font-size:10.5px;font-weight:700;margin-top:3px;opacity:.85}
+  .dday.hot{background:#fff1f2;color:var(--danger)} .dday.warn{background:#fffbeb;color:var(--warn)}
+  .dday.cool{background:#f1f5f9;color:var(--award)} .dday.pre{background:#f5f3ff;color:var(--prestd)}
+  .mid .cat{font-size:11px;font-weight:800;padding:2px 9px;border-radius:6px;color:#fff;margin-right:8px}
+  .cat.thng{background:var(--thng)}.cat.cnstwk{background:var(--cnstwk)}.cat.servc{background:var(--servc)}.cat.prestd{background:var(--prestd)}
+  .mid .title{font-size:15.5px;font-weight:700;margin:6px 0 5px;line-height:1.4}
+  .mid .meta{font-size:12.5px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap}
+  .mid .meta b{color:#334155;font-weight:700}
+  .mid mark{background:#fde68a;color:#7c2d12;padding:0 2px;border-radius:3px}
+  .right{text-align:right;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+  .amt{font-size:15px;font-weight:800}
+  .amt .u{font-size:11px;color:var(--muted);font-weight:600}
+  .go{font-size:12.5px;font-weight:800;color:var(--brand);text-decoration:none;border:1px solid #c7d7ff;border-radius:8px;padding:7px 12px;white-space:nowrap;background:#f2f6ff}
+  .go:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .new{font-size:10px;font-weight:900;color:#fff;background:var(--danger);border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+  @media(max-width:720px){.item{grid-template-columns:64px 1fr}.right{grid-column:1/3;flex-direction:row;justify-content:space-between;align-items:center}}
+  .empty{text-align:center;color:var(--muted);padding:50px 0}
+  /* help */
+  .help{margin-top:22px;background:#fff;border:1px dashed #c7d2e5;border-radius:14px;padding:18px 20px}
+  .help h3{margin:0 0 8px;font-size:14px}
+  .help p{margin:6px 0;color:#475569;font-size:13px;line-height:1.6}
+  .help code{background:#eef2fb;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:12.5px}
+  .help .svc{display:inline-block;background:#f5f3ff;border:1px solid #ddd6fe;color:#6d28d9;border-radius:6px;padding:2px 8px;font-weight:700;font-size:12px;margin:2px 4px 2px 0}
+  .foot{margin-top:16px;text-align:center;color:#94a3b8;font-size:11.5px}
+</style>
+</head>
+<body>
+  <div class="top">
+    <div class="brand">
+      <span class="logo">100<span class="deg">°</span>10 조달 레이더</span>
+      <span class="sub">나라장터 공고를 한 화면에서 빠르게</span>
+    </div>
+    <div class="spacer"></div>
+    <a href="https://www.g2b.go.kr/" target="_blank" rel="noopener"
+       style="font-size:12.5px;font-weight:800;padding:7px 14px;border-radius:20px;background:#fff;color:#123a9e;text-decoration:none;white-space:nowrap">↗ 나라장터 열기</a>
+    <span id="modeBadge" class="livebadge sample">● 샘플 데이터</span>
+    <span class="updated" id="updated"></span>
+  </div>
+
+  <div class="wrap">
+    <div class="kpis">
+      <div class="kpi acc"><div class="n" id="k-total">–</div><div class="l">표시 중 공고</div></div>
+      <div class="kpi"><div class="n" id="k-new">–</div><div class="l">오늘 신규</div></div>
+      <div class="kpi dgr"><div class="n" id="k-hot">–</div><div class="l">마감 임박 (D-3 이하)</div></div>
+      <div class="kpi pst"><div class="n" id="k-pre">–</div><div class="l">사전규격</div></div>
+      <div class="kpi"><div class="n" id="k-kw">–</div><div class="l">관심키워드 일치</div></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="row1">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input id="q" placeholder="공고명·기관·공고번호 검색…">
+        </div>
+        <div class="kw">
+          <span class="lab">관심키워드</span>
+          <input id="kw" placeholder="예: 소프트웨어, CCTV, 유지보수 (쉼표로 구분)">
+        </div>
+        <select class="sort" id="sort">
+          <option value="deadline">마감 임박순</option>
+          <option value="latest">최신 공고순</option>
+          <option value="amount">추정금액 높은순</option>
+        </select>
+      </div>
+      <div class="tabs" id="tabs"></div>
+    </div>
+
+    <div class="list" id="list"></div>
+
+    <div class="help">
+      <h3>실시간 나라장터 데이터로 켜는 법 (무겁지 않게)</h3>
+      <p>지금 화면은 UX 확인용 <b>샘플</b>입니다. 실데이터로 바꾸려면 딱 두 가지만 있으면 됩니다.</p>
+      <p><b>① 공공데이터포털 서비스키</b> — <code>data.go.kr</code>에서 아래 서비스에 "활용신청"(무료) 후 발급받는 인증키입니다.
+        <span class="svc">입찰공고정보서비스 · 15129394 (물품·공사·용역)</span>
+        <span class="svc">사전규격정보서비스 · 15129437</span></p>
+      <p><b>② 수집기 실행</b> — 함께 드린 <code>조달레이더_수집기.py</code>를 실행하면 위 서비스에서 공고를 받아 이 폴더에 <code>notices.json</code>을 만듭니다. 그 뒤 이 <code>조달레이더.html</code>을 새로고침하면 상단 배지가 <b style="color:#059669">● 실데이터</b>로 바뀌고 실제 공고가 뜹니다.</p>
+      <p style="color:#94a3b8">데이터 출처: 조달청 나라장터(g2b.go.kr) · 공공데이터포털(data.go.kr) 공개 API. 관심키워드는 이 브라우저 안에서만 필터/하이라이트에 쓰이며 어디로도 전송되지 않습니다.</p>
+    </div>
+    <div class="foot">100°10 조달 레이더 · 나라장터 물품·공사·용역·사전규격 공고 통합 뷰</div>
+  </div>
+
+<script>
+// ---- 카테고리 정의 ----
+const CATS = {
+  thng:{label:"물품", cls:"thng"},
+  cnstwk:{label:"공사", cls:"cnstwk"},
+  servc:{label:"용역", cls:"servc"},
+  prestd:{label:"사전규격", cls:"prestd"},
+};
+// ---- 샘플 데이터 (마감일은 오늘 기준 상대일로 생성되어 항상 '살아있게' 보임) ----
+function daysFrom(n){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+n);return d;}
+function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function no(seed){return "2026"+String(seed).padStart(8,"0");}
+const SAMPLE = [
+  {cat:"thng",  title:"관공서 업무용 노트북 및 주변기기 구매",                 org:"조달청",           region:"대전", amount:420000000, posted:daysFrom(0),  deadline:daysFrom(6)},
+  {cat:"cnstwk",title:"○○초등학교 체육관 신축공사",                          org:"경기도교육청",     region:"경기", amount:5800000000, posted:daysFrom(0),  deadline:daysFrom(2)},
+  {cat:"servc", title:"통합관제센터 CCTV 유지관리 용역",                      org:"부산광역시",       region:"부산", amount:310000000, posted:daysFrom(-1), deadline:daysFrom(9)},
+  {cat:"prestd",title:"클라우드 기반 행정정보시스템 고도화(사전규격)",         org:"행정안전부",       region:"세종", amount:1450000000,posted:daysFrom(0),  deadline:daysFrom(4)},
+  {cat:"thng",  title:"영상감시장비(CCTV 카메라) 일괄 구매설치",              org:"한국도로공사",     region:"전국", amount:890000000, posted:daysFrom(-1), deadline:daysFrom(1)},
+  {cat:"servc", title:"차세대 홈페이지 구축 소프트웨어 개발 용역",             org:"국민건강보험공단", region:"강원", amount:760000000, posted:daysFrom(0),  deadline:daysFrom(12)},
+  {cat:"cnstwk",title:"국도 45호선 도로 확·포장 공사",                        org:"국토교통부",       region:"충남", amount:12400000000,posted:daysFrom(-2),deadline:daysFrom(3)},
+  {cat:"prestd",title:"지능형 교통정보시스템 장비 구매(사전규격)",            org:"서울특별시",       region:"서울", amount:2100000000,posted:daysFrom(-1), deadline:daysFrom(7)},
+  {cat:"thng",  title:"학교 급식실 조리기구 및 집기 구매",                    org:"인천광역시교육청", region:"인천", amount:280000000, posted:daysFrom(-2), deadline:daysFrom(0)},
+  {cat:"servc", title:"데이터센터 정보보안 관제 유지보수 용역",               org:"한국전력공사",     region:"전남", amount:540000000, posted:daysFrom(-3), deadline:daysFrom(15)},
+  {cat:"cnstwk",title:"공공하수처리시설 증설 공사",                          org:"환경부",           region:"경북", amount:8300000000, posted:daysFrom(-2), deadline:daysFrom(5)},
+  {cat:"thng",  title:"소방용 방화복 및 개인보호장비 구매",                   org:"소방청",           region:"세종", amount:640000000, posted:daysFrom(-3), deadline:daysFrom(-1)},
+];
+
+let DATA = SAMPLE.map((x,i)=>({...x, id:no(i+1001), _sample:true}));
+let LIVE = false;
+let state = {cat:"all", q:"", kw:[], sort:"deadline"};
+
+// ---- 실데이터(notices.json)가 있으면 자동 로드 ----
+async function tryLoadLive(){
+  try{
+    const r = await fetch("notices.json", {cache:"no-store"});
+    if(!r.ok) throw 0;
+    const j = await r.json();
+    const rows = (Array.isArray(j)?j:j.items)||[];
+    if(rows.length){
+      DATA = rows.map(normalize);
+      LIVE = true;
+    }
+  }catch(e){/* 샘플 유지 */}
+  render();
+  const b=document.getElementById("modeBadge");
+  if(LIVE){b.textContent="● 실데이터"; b.className="livebadge live";}
+  document.getElementById("updated").textContent = (LIVE?"실데이터 · ":"샘플 · ")+"업데이트 "+fmt(new Date())+" "+new Date().toTimeString().slice(0,5);
+}
+function normalize(x){
+  const d = s => { if(!s) return null; const p=String(s).replace(/[^0-9]/g,""); if(p.length<8) return null;
+    return new Date(+p.slice(0,4), +p.slice(4,6)-1, +p.slice(6,8)); };
+  return {
+    id:x.id||x.bidNtceNo||x.공고번호||"",
+    cat:x.cat||"thng",
+    title:x.title||x.bidNtceNm||x.공고명||"(제목없음)",
+    org:x.org||x.ntceInsttNm||x.기관명||"",
+    region:x.region||x.지역||"",
+    amount:+(x.amount||x.presmptPrce||x.추정가격||0)||0,
+    posted:d(x.posted||x.bidNtceDate||x.공고일)||new Date(),
+    deadline:d(x.deadline||x.bidClseDate||x.마감일)||new Date(),
+    url:x.url||x.원문URL||null,
+    _sample:false,
+  };
+}
+
+function ddayOf(dl){const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(dl.getFullYear(),dl.getMonth(),dl.getDate())-t)/86400000);}
+function won(n){ if(!n) return "–"; if(n>=100000000) return (n/100000000).toFixed(n%100000000?1:0)+"억"; if(n>=10000) return Math.round(n/10000)+"만"; return n.toLocaleString(); }
+function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function hl(s){ let out=esc(s); state.kw.forEach(k=>{ if(!k) return; const re=new RegExp("("+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi"); out=out.replace(re,"<mark>$1</mark>"); }); return out; }
+
+function passFilters(x){
+  if(state.cat!=="all" && x.cat!==state.cat) return false;
+  if(state.q){ const q=state.q.toLowerCase(); if(!((x.title+ x.org + x.id).toLowerCase().includes(q))) return false; }
+  return true;
+}
+function matchesKw(x){ if(!state.kw.length) return false; const s=(x.title+x.org).toLowerCase(); return state.kw.some(k=>k&&s.includes(k.toLowerCase())); }
+
+// 공고 클릭 시 실제 내역으로 보내는 링크 결정
+function linkFor(x){
+  // ① 조달청 API가 준 공고 상세 URL이 있으면 그대로 (실데이터에서 바로 상세로 진입)
+  if(x.url && /^https?:\/\//.test(x.url))
+    return {href:x.url, label:"나라장터에서 보기 →", tip:"공고 상세 페이지로 이동"};
+  // ② 상세 URL이 없거나 샘플이면, 그 공고를 실제로 찾아주는 검색으로 연결
+  const q = x._sample
+    ? (x.title + " 나라장터 입찰공고")
+    : ((x.id ? x.id + " " : "") + x.title);
+  return {
+    href:"https://search.naver.com/search.naver?query=" + encodeURIComponent(q),
+    label:"공고 찾아보기 →",
+    tip: x._sample ? "샘플 공고입니다 — 유사 실제 공고를 검색으로 보여줍니다"
+                   : "이 공고를 검색으로 찾아 상세를 확인합니다"
+  };
+}
+
+function render(){
+  // tabs
+  const counts={all:DATA.length}; Object.keys(CATS).forEach(c=>counts[c]=DATA.filter(x=>x.cat===c).length);
+  const tabsEl=document.getElementById("tabs");
+  const tabDefs=[["all","전체","#0b3ea8"]].concat(Object.entries(CATS).map(([k,v])=>[k,v.label,getComputedStyle(document.documentElement).getPropertyValue("--"+k)]));
+  tabsEl.innerHTML = tabDefs.map(([k,label,col])=>{
+    const on=state.cat===k?("on "+(k==="all"?"all":CATS[k]?.cls)):"";
+    const dot=k==="all"?"":`<span class="dot" style="background:${col}"></span>`;
+    return `<div class="tab ${on}" data-cat="${k}">${dot}${label} <span class="cnt">${counts[k]||0}</span></div>`;
+  }).join("");
+  tabsEl.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{state.cat=t.dataset.cat;render();});
+
+  let rows=DATA.filter(passFilters);
+  const dkey = x => { const d=ddayOf(x.deadline); return d<0 ? 100000+Math.abs(d) : d; }; // 마감된 건 맨 아래로
+  rows.sort((a,b)=> state.sort==="latest" ? b.posted-a.posted
+                   : state.sort==="amount" ? b.amount-a.amount
+                   : dkey(a)-dkey(b));
+  // kpis
+  document.getElementById("k-total").textContent=rows.length;
+  document.getElementById("k-new").textContent=DATA.filter(x=>ddayOf(x.posted)===0).length;
+  document.getElementById("k-hot").textContent=DATA.filter(x=>{const d=ddayOf(x.deadline);return d>=0&&d<=3;}).length;
+  document.getElementById("k-pre").textContent=DATA.filter(x=>x.cat==="prestd").length;
+  document.getElementById("k-kw").textContent=DATA.filter(matchesKw).length;
+
+  const list=document.getElementById("list");
+  if(!rows.length){ list.innerHTML=`<div class="empty">조건에 맞는 공고가 없습니다.</div>`; return; }
+  list.innerHTML=rows.map(x=>{
+    const dd=ddayOf(x.deadline);
+    let cls = x.cat==="prestd"?"pre": dd<=0?"hot": dd<=3?"hot": dd<=7?"warn":"cool";
+    const dtxt = dd<0?"마감": dd===0?"오늘": "D-"+dd;
+    const isNew = ddayOf(x.posted)===0;
+    const kwHit = matchesKw(x);
+    const lk = linkFor(x);
+    return `<div class="item" style="${kwHit?'outline:2px solid #fde68a;outline-offset:-1px;':''}">
+      <div class="dday ${cls}"><div class="d">${dtxt}</div><div class="t">${fmt(x.deadline).slice(5)}</div></div>
+      <div class="mid">
+        <div><span class="cat ${CATS[x.cat].cls}">${CATS[x.cat].label}</span><span style="font-size:12px;color:#94a3b8">${x.id}</span>${isNew?'<span class="new">NEW</span>':''}</div>
+        <div class="title">${hl(x.title)}</div>
+        <div class="meta"><span>🏛 <b>${hl(x.org)}</b></span>${x.region?`<span>📍 ${esc(x.region)}</span>`:""}<span>공고 ${fmt(x.posted)}</span><span>마감 ${fmt(x.deadline)}</span></div>
+      </div>
+      <div class="right">
+        <div class="amt">${won(x.amount)}<span class="u"> 원</span></div>
+        <a class="go" href="${lk.href}" target="_blank" rel="noopener" title="${esc(lk.tip)}">${lk.label}</a>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+// events
+document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value.trim();render();});
+document.getElementById("kw").addEventListener("input",e=>{state.kw=e.target.value.split(",").map(s=>s.trim()).filter(Boolean);render();});
+document.getElementById("sort").addEventListener("change",e=>{state.sort=e.target.value;render();});
+tryLoadLive();
+</script>
+</body>
+</html>
