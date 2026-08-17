@@ -1,0 +1,26 @@
+name: jodal-radar-daily-collect
+on:
+  schedule:
+    - cron: '0 22 * * *'
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run collector
+        env:
+          SERVICE_KEY: ${{ secrets.SERVICE_KEY }}
+        run: python collector.py
+      - name: Commit updated notices.json
+        run: |
+          git config user.name "jodal-radar-bot"
+          git config user.email "jodal-radar-bot@users.noreply.github.com"
+          git add notices.json
+          git commit -m "chore: auto-update notices $(date -u +%Y-%m-%d)" || echo "no changes"
+          git push
