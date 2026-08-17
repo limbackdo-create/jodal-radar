@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100°10 조달 레이더 — 우리 지역 공공조달 공고, 매일 자동으로</title>
+<style>
+  :root{
+    --navy:#0b1e50; --navy2:#123a9e; --brand:#1f5fff; --ink:#0f172a; --muted:#5b6b86;
+    --bg:#f5f7fb; --card:#fff; --line:#e6eaf2; --good:#0d9488; --hot:#e11d48; --amber:#d97706;
+    --thng:#2563eb; --cnstwk:#c2620e; --servc:#0d9488; --prestd:#7c3aed;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  .btn{display:inline-block;font-weight:800;border-radius:12px;padding:14px 26px;font-size:16px;cursor:pointer;border:0;transition:.15s}
+  .btn-primary{background:var(--brand);color:#fff;box-shadow:0 8px 24px rgba(31,95,255,.28)}
+  .btn-primary:hover{background:#0b3ea8}
+  .btn-ghost{background:#fff;color:var(--navy2);border:1.5px solid #c7d7ff}
+  .btn-ghost:hover{background:#f2f6ff}
+  /* nav */
+  nav{position:sticky;top:0;z-index:20;background:rgba(11,30,80,.92);backdrop-filter:blur(8px);color:#fff}
+  nav .row{display:flex;align-items:center;gap:18px;height:62px}
+  nav .logo{font-weight:900;font-size:19px;letter-spacing:.3px}
+  nav .logo .deg{color:#8fd0ff}
+  nav .links{margin-left:auto;display:flex;gap:22px;font-size:14px;color:#c3d3f5}
+  nav .links a:hover{color:#fff}
+  nav .cta{background:#fff;color:var(--navy2);padding:9px 16px;border-radius:10px;font-weight:800;font-size:14px}
+  @media(max-width:720px){nav .links{display:none}}
+  /* hero */
+  .hero{background:linear-gradient(120deg,#0b1e50,#123a9e 60%,#1f5fff);color:#fff;padding:64px 0 76px;position:relative;overflow:hidden}
+  .hero .eyebrow{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;color:#dbe7ff;margin-bottom:18px}
+  .hero h1{font-size:clamp(30px,5vw,48px);font-weight:900;letter-spacing:-1px;line-height:1.2}
+  .hero h1 .hl{color:#8fd0ff}
+  .hero p.sub{font-size:clamp(16px,2.2vw,20px);color:#d3e0fb;margin:18px 0 30px;max-width:640px}
+  .hero .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .hero .note{margin-top:16px;font-size:13px;color:#aebfe6}
+  .hero .kpis{display:flex;gap:14px;flex-wrap:wrap;margin-top:40px}
+  .hero .kpi{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:14px 18px;min-width:150px}
+  .hero .kpi .n{font-size:26px;font-weight:900}
+  .hero .kpi .l{font-size:12.5px;color:#bccdf0;margin-top:2px}
+  /* section */
+  section{padding:64px 0}
+  .tag{display:inline-block;color:var(--brand);font-weight:800;font-size:13px;letter-spacing:1px;margin-bottom:10px}
+  h2.sec{font-size:clamp(24px,3.5vw,34px);font-weight:900;letter-spacing:-.5px}
+  .lead{color:var(--muted);font-size:16px;margin-top:10px;max-width:640px}
+  /* problem */
+  .prob{background:#fff}
+  .prob .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:26px}
+  @media(max-width:760px){.prob .grid{grid-template-columns:1fr}}
+  .prob .card{border:1px solid var(--line);border-radius:14px;padding:20px 22px;background:#fafbff}
+  .prob .card b{color:var(--hot)}
+  /* features */
+  .feat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+  @media(max-width:860px){.feat{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.feat{grid-template-columns:1fr}}
+  .fcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .fcard .ic{width:42px;height:42px;border-radius:11px;background:#eef3ff;display:grid;place-items:center;font-size:21px;margin-bottom:12px}
+  .fcard h3{font-size:17px;margin-bottom:6px}
+  .fcard p{color:var(--muted);font-size:14px}
+  /* steps */
+  .steps{background:#0b1223;color:#fff}
+  .steps .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+  @media(max-width:760px){.steps .grid{grid-template-columns:1fr}}
+  .step{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px}
+  .step .num{width:34px;height:34px;border-radius:9px;background:var(--brand);color:#fff;font-weight:900;display:grid;place-items:center;margin-bottom:12px}
+  .step h3{font-size:17px;margin-bottom:6px}
+  .step p{color:#aebbd6;font-size:14px}
+  /* pricing */
+  .pricing{background:#fff}
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:34px;align-items:stretch}
+  @media(max-width:860px){.plans{grid-template-columns:1fr;max-width:440px;margin-left:auto;margin-right:auto}}
+  .plan{border:1px solid var(--line);border-radius:18px;padding:26px;background:#fff;display:flex;flex-direction:column;position:relative}
+  .plan.best{border:2px solid var(--brand);box-shadow:0 18px 50px rgba(31,95,255,.16)}
+  .plan .badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--brand);color:#fff;font-size:12px;font-weight:800;padding:4px 14px;border-radius:20px}
+  .plan .name{font-weight:800;font-size:15px;color:var(--navy2)}
+  .plan .price{font-size:34px;font-weight:900;margin:10px 0 2px;letter-spacing:-1px}
+  .plan .price small{font-size:15px;color:var(--muted);font-weight:600}
+  .plan .desc{color:var(--muted);font-size:13.5px;min-height:38px}
+  .plan ul{list-style:none;margin:16px 0 22px;display:flex;flex-direction:column;gap:10px}
+  .plan li{font-size:14px;padding-left:26px;position:relative;color:#334155}
+  .plan li:before{content:"✓";position:absolute;left:0;color:var(--good);font-weight:900}
+  .plan li.off{color:#9aa6ba}.plan li.off:before{content:"—";color:#cbd5e1}
+  .plan .btn{width:100%;text-align:center;margin-top:auto}
+  .pnote{text-align:center;color:var(--muted);font-size:13px;margin-top:20px}
+  /* industries */
+  .ind{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .ind span{background:#eef3ff;border:1px solid #dbe7ff;color:var(--navy2);border-radius:20px;padding:8px 16px;font-weight:700;font-size:14px}
+  /* faq */
+  .faq{background:#fff}
+  details{border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-top:12px;background:#fafbff}
+  details summary{font-weight:800;cursor:pointer;font-size:15.5px;list-style:none}
+  details summary::-webkit-details-marker{display:none}
+  details summary:before{content:"＋";color:var(--brand);font-weight:900;margin-right:10px}
+  details[open] summary:before{content:"－"}
+  details p{color:var(--muted);font-size:14px;margin-top:10px}
+  /* final cta */
+  .final{background:linear-gradient(120deg,#123a9e,#1f5fff);color:#fff;text-align:center;border-radius:24px;padding:52px 24px;margin:60px auto;max-width:1036px}
+  .final h2{font-size:clamp(24px,4vw,36px);font-weight:900}
+  .final p{color:#d6e2fb;margin:12px 0 26px;font-size:17px}
+  footer{background:#0b1223;color:#9fb0d0;font-size:13px;padding:34px 0}
+  footer .row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  footer a{color:#cdd9f2}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap row">
+  <div class="logo">100<span class="deg">°</span>10 조달 레이더</div>
+  <div class="links">
+    <a href="#features">기능</a>
+    <a href="#how">이용 방법</a>
+    <a href="#pricing">요금제</a>
+    <a href="#faq">자주 묻는 질문</a>
+  </div>
+  <a class="cta" href="#pricing">구독 시작</a>
+</div></nav>
+
+<header class="hero"><div class="wrap">
+  <span class="eyebrow">대구 · 경북 지역 공공조달 특화</span>
+  <h1>우리 지역 나라장터 공고,<br><span class="hl">매일 자동으로</span> 챙겨드립니다.</h1>
+  <p class="sub">CCTV·전기·방송음향·건축·설계용역… 우리 회사가 노리는 공고만, 지역과 키워드로 걸러 한 화면에. 이제 나라장터를 매일 뒤질 필요가 없습니다.</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="#pricing">지금 구독 시작하기</a>
+    <a class="btn btn-ghost" href="#how">3일 무료로 먼저 보기</a>
+  </div>
+  <p class="note">설치·프로그램 없음 · 로그인만 하면 웹에서 바로 · 조달청 나라장터 공식 공공데이터 기반</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="n">8,500건+</div><div class="l">나라장터 주간 신규 공고(물품·공사·용역)</div></div>
+    <div class="kpi"><div class="n">99건</div><div class="l">최근 30일 대구·경북 설계용역만</div></div>
+    <div class="kpi"><div class="n">하루 5초</div><div class="l">놓친 공고 확인에 드는 시간</div></div>
+  </div>
+</div></header>
+
+<!-- 문제 -->
+<section class="prob"><div class="wrap">
+  <span class="tag">이런 적 없으셨나요</span>
+  <h2 class="sec">공고 하나 놓치면, 몇 천만 원이 날아갑니다.</h2>
+  <div class="grid">
+    <div class="card">📌 나라장터에 매일 들어가 <b>물품·공사·용역을 일일이</b> 검색하느라 시간을 뺏깁니다.</div>
+    <div class="card">📌 바쁜 날 하루 걸렀더니, <b>우리 지역 딱 맞는 공고의 마감이 지나</b> 있었습니다.</div>
+    <div class="card">📌 전국 공고는 너무 많고, <b>정작 대구·경북 우리 분야만</b> 보고 싶은데 방법이 없습니다.</div>
+    <div class="card">📌 직원이 손으로 정리한 목록은 <b>늘 하루씩 늦고</b>, 마감임박 건은 표시도 안 됩니다.</div>
+  </div>
+</div></section>
+
+<!-- 기능 -->
+<section id="features"><div class="wrap">
+  <span class="tag">조달 레이더가 하는 일</span>
+  <h2 class="sec">지역·키워드로 걸러, 놓칠 수 없게.</h2>
+  <p class="lead">전국 수천 건을 대신 훑어, 대표님 회사에 맞는 것만 한 화면에 올려드립니다.</p>
+  <div class="feat">
+    <div class="fcard"><div class="ic">📍</div><h3>지역 한정</h3><p>대구·경북·밀양 등 원하는 지역의 발주기관 공고만 자동으로 걸러 보여드립니다.</p></div>
+    <div class="fcard"><div class="ic">🔑</div><h3>관심 키워드</h3><p>CCTV·방범·방송설비·음향설비·건축공사·설계용역 등 우리 분야 키워드를 노란색으로 강조.</p></div>
+    <div class="fcard"><div class="ic">⏰</div><h3>마감 임박 정렬</h3><p>마감이 가까운 순서로 자동 정렬. D-3 이하 임박 건은 한눈에 붉게 표시됩니다.</p></div>
+    <div class="fcard"><div class="ic">🔗</div><h3>나라장터 바로가기</h3><p>공고를 누르면 나라장터 상세 페이지로 바로 이동. 원문·첨부까지 즉시 확인.</p></div>
+    <div class="fcard"><div class="ic">🔄</div><h3>매일 자동 갱신</h3><p>매일 새벽 최신 공고를 자동 수집. 대표님은 로그인만 하면 오늘 것이 준비돼 있습니다.</p></div>
+    <div class="fcard"><div class="ic">🧭</div><h3>물품·공사·용역·사전규격</h3><p>업무 유형별 탭으로 구분. 검색창에 기관·공고번호를 치면 그 자리에서 좁혀집니다.</p></div>
+  </div>
+</div></section>
+
+<!-- 이용 방법 -->
+<section id="how" class="steps"><div class="wrap">
+  <span class="tag" style="color:#8fd0ff">이용 방법</span>
+  <h2 class="sec" style="color:#fff">3단계면 끝. 설치도, 프로그램도 없습니다.</h2>
+  <div class="grid">
+    <div class="step"><div class="num">1</div><h3>구독 신청</h3><p>원하는 요금제를 고르고 지역·관심 키워드를 알려주세요. 계정을 만들어 드립니다.</p></div>
+    <div class="step"><div class="num">2</div><h3>로그인</h3><p>PC·휴대폰 브라우저에서 로그인. 우리 지역·우리 분야 공고가 이미 정리돼 있습니다.</p></div>
+    <div class="step"><div class="num">3</div><h3>매일 확인</h3><p>아침에 한 번, 마감임박·신규 공고만 5초 스캔. 관심 건은 나라장터로 바로 이동해 대응.</p></div>
+  </div>
+</div></section>
+
+<!-- 요금제 -->
+<section id="pricing" class="pricing"><div class="wrap">
+  <span class="tag">요금제</span>
+  <h2 class="sec">공고 하나 수주하면, 1년치 구독료가 나옵니다.</h2>
+  <p class="lead">부담 없는 월 구독. 언제든 해지 가능하며, 첫 3일은 무료로 사용해 보실 수 있습니다.</p>
+  <div class="plans">
+    <div class="plan">
+      <div class="name">라이트</div>
+      <div class="price">39,000<small>원/월</small></div>
+      <div class="desc">1인 사장님·소규모 업체용</div>
+      <ul>
+        <li>지역 1곳 (예: 대구 또는 경북)</li>
+        <li>관심 키워드 5개</li>
+        <li>물품·공사·용역·사전규격</li>
+        <li>주 2회 갱신</li>
+        <li class="off">마감임박 알림</li>
+        <li class="off">팀 계정</li>
+      </ul>
+      <a class="btn btn-ghost" href="#contact">이 요금제로 시작</a>
+    </div>
+    <div class="plan best">
+      <div class="badge">가장 인기</div>
+      <div class="name">프로</div>
+      <div class="price">99,000<small>원/월</small></div>
+      <div class="desc">지역 영업을 제대로 챙기는 업체용</div>
+      <ul>
+        <li>지역 3곳 (대구+경북+밀양 등)</li>
+        <li>관심 키워드 <b>무제한</b></li>
+        <li>물품·공사·용역·사전규격</li>
+        <li><b>매일 자동 갱신</b></li>
+        <li>마감임박 알림 (이메일)</li>
+        <li class="off">팀 계정</li>
+      </ul>
+      <a class="btn btn-primary" href="#contact">프로로 시작하기</a>
+    </div>
+    <div class="plan">
+      <div class="name">기업</div>
+      <div class="price">별도견적</div>
+      <div class="desc">전국·다지점·팀 단위 운영</div>
+      <ul>
+        <li>전국 또는 다지역</li>
+        <li>키워드·계정 무제한</li>
+        <li>팀 계정 (여러 담당자)</li>
+        <li>매일 자동 갱신 + 문자 알림</li>
+        <li>맞춤 리포트·엑셀 내보내기</li>
+        <li>전담 지원</li>
+      </ul>
+      <a class="btn btn-ghost" href="#contact">문의하기</a>
+    </div>
+  </div>
+  <p class="pnote">표시 금액은 부가세 별도 · 분기·연 결제 시 할인 · 요금제는 시장 반응에 맞춰 조정될 수 있습니다.</p>
+</div></section>
+
+<!-- 대상 업종 -->
+<section style="background:#fafbff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
+  <span class="tag">이런 분들께 딱 맞습니다</span>
+  <h2 class="sec">대구·경북에서 공공조달을 노리는 모든 업체</h2>
+  <div class="ind">
+    <span>CCTV·보안장비</span><span>전기공사</span><span>방송·음향설비</span><span>건축공사</span>
+    <span>설계·엔지니어링</span><span>토목·조경</span><span>정보시스템·SW</span><span>소방·기계설비</span>
+    <span>물품 납품·조달등록업체</span><span>유지보수·용역</span>
+  </div>
+</div></section>
+
+<!-- FAQ -->
+<section id="faq" class="faq"><div class="wrap">
+  <span class="tag">자주 묻는 질문</span>
+  <h2 class="sec">궁금하신 점</h2>
+  <details open><summary>데이터는 어디서 오나요? 믿을 수 있나요?</summary><p>조달청 나라장터(g2b.go.kr)가 공공데이터포털(data.go.kr)로 개방하는 공식 Open API를 사용합니다. 저희가 임의로 만든 데이터가 아니라 실제 입찰공고 원본이며, 각 공고는 나라장터 상세 페이지로 바로 연결됩니다.</p></details>
+  <details><summary>프로그램을 설치해야 하나요?</summary><p>아니요. 설치가 전혀 없습니다. 로그인만 하면 PC·휴대폰 웹 브라우저에서 바로 보실 수 있습니다.</p></details>
+  <details><summary>우리 지역·우리 분야만 볼 수 있나요?</summary><p>네, 그게 핵심입니다. 구독 시 지역(대구·경북·밀양 등)과 관심 키워드(CCTV·설계용역 등)를 지정하시면, 그 조건에 맞는 공고만 모아 보여드립니다.</p></details>
+  <details><summary>해지는 자유로운가요?</summary><p>월 단위 구독으로 언제든 해지 가능합니다. 첫 3일 무료 체험 기간에는 비용이 청구되지 않습니다.</p></details>
+  <details><summary>사전규격·낙찰·계약 정보도 되나요?</summary><p>사전규격 공개 정보 연동을 지원하며, 낙찰·계약 이력 등 추가 데이터는 기업 요금제에서 맞춤으로 제공해 드립니다.</p></details>
+</div></section>
+
+<!-- 최종 CTA -->
+<div id="contact" class="final wrap">
+  <h2>오늘 놓친 공고가, 경쟁사에게는 기회입니다.</h2>
+  <p>3일 무료 체험으로 우리 지역·우리 분야 공고를 먼저 받아보세요.</p>
+  <a class="btn btn-primary" style="background:#fff;color:var(--navy2)" href="mailto:limbackdo@gmail.com?subject=조달%20레이더%20구독%20문의&body=회사명%3A%0A지역(대구%2F경북%2F밀양%20등)%3A%0A관심%20키워드%3A%0A연락처%3A">이메일로 구독·체험 신청</a>
+  <p style="font-size:13px;margin-top:16px;color:#c3d3f5">문의: limbackdo@gmail.com · 100°10 비즈니스 플랫폼</p>
+</div>
+
+<footer><div class="wrap row">
+  <div>© 2026 100°10 조달 레이더 · 운영: 100°10 비즈니스 플랫폼</div>
+  <div>데이터 출처: 조달청 나라장터(g2b.go.kr) · 공공데이터포털(data.go.kr) 공개 API</div>
+</div></footer>
+
+</body>
+</html>
