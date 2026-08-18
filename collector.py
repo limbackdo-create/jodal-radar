@@ -11,6 +11,9 @@ KEY = os.environ.get("SERVICE_KEY", "").strip()
 if not KEY:
     print("ERROR: 환경변수 SERVICE_KEY 가 없습니다. GitHub Secret 에 SERVICE_KEY 를 등록하세요.")
     sys.exit(1)
+# 인코딩(Encoding) 키가 저장돼 있어도 되게: URL-인코딩된 값이면 먼저 디코딩해 원본으로 만든다.
+if "%" in KEY and any(tok in KEY for tok in ("%2B", "%2b", "%2F", "%2f", "%3D", "%3d")):
+    KEY = urllib.parse.unquote(KEY)
 
 # 입찰공고정보서비스 - 키워드 검색용(PPSSrch) 오퍼레이션
 BASES = [
